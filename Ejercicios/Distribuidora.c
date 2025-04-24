@@ -17,10 +17,13 @@ struct{
     NodoTarea *siguiente;
 }typedef NodoTarea;
 
+//funcion para crear nodo/lista vacia
 NodoTarea *listaVacia(){
     return NULL;
 }
 
+
+//funcion para llenar una tarea
 void cargarTarea(tarea *tarea, int ID){
     tarea->TareaID = ID;
     tarea->duracion = (rand()%91) + 10;
@@ -29,6 +32,8 @@ void cargarTarea(tarea *tarea, int ID){
     gets(buffer);
     tarea->descripcion = asignarMemoriaYContenido(buffer);
 }
+
+
 
 int main(){
     
