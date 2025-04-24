@@ -21,18 +21,18 @@ NodoTarea *listaVacia(){
     return NULL;
 }
 
-void cargarTarea(tarea tarea, int ID){
-    tarea.TareaID = ID;
-    tarea.duracion = (rand()%91) + 10;
+void cargarTarea(tarea *tarea, int ID){
+    tarea->TareaID = ID;
+    tarea->duracion = (rand()%91) + 10;
     char buffer[100];
     printf("\nDescripcion de la tarea (Max 100 caracteres);");
     gets(buffer);
-    tarea.descripcion = asignarMemoriaYContenido(buffer);
+    tarea->descripcion = asignarMemoriaYContenido(buffer);
 }
 
 int main(){
     
-
+    NodoTarea *tareasPendientes = listaVacia();
 
     
     return 0;
