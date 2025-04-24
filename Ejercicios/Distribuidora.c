@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "../librerias/MisFunciones.h"
 
 //Estructura para las tareas realizadas o a realizar
 struct {
@@ -16,6 +17,18 @@ struct{
     NodoTarea *siguiente;
 }typedef NodoTarea;
 
+NodoTarea *listaVacia(){
+    return NULL;
+}
+
+void cargarTarea(tarea tarea, int ID){
+    tarea.TareaID = ID;
+    tarea.duracion = (rand()%91) + 10;
+    char buffer[100];
+    printf("\nDescripcion de la tarea (Max 100 caracteres);");
+    gets(buffer);
+    tarea.descripcion = asignarMemoriaYContenido(buffer);
+}
 
 int main(){
     

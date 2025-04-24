@@ -8,6 +8,8 @@ char *asignarMemoriaYContenido(char *texto){
         }
         strcpy(retorno,texto); /* copia de la cadena original */
         return retorno;
-    }else{return NULL;}
+    }else{
+        return NULL;
+    }
     
 }
