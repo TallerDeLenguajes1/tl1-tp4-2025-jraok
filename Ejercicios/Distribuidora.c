@@ -3,20 +3,24 @@
 #include <string.h>
 #include <time.h>
 
-struct 
-{
+//Estructura para las tareas realizadas o a realizar
+struct {
     int TareaID;    /* numero autoincremental comenzando por el 1000 */
     char *descripcion;  
     int duracion;   /* aleatorio entre 10 - 100 */
 } typedef tarea;
 
-struct
-{
+//Nodo para la lista enlazada
+struct{
     tarea T;
     NodoTarea *siguiente;
 }typedef NodoTarea;
 
+
 int main(){
+    
+
+
     
     return 0;
 }
