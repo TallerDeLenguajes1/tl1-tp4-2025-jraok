@@ -163,10 +163,12 @@ void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas)
             // muestro y me muevo al sieguiente nodo
             mostrarNodo(*auxPendiente);
             auxPendiente = auxPendiente->siguiente;
+            puts("Estado: Pendiente");
         }else if (auxRealizada != NULL){ /* solo lo muestro su la realizadas no es null */
             // muestro y me muevo al sieguiente nodo
             mostrarNodo(*auxRealizada);
             auxRealizada = auxRealizada->siguiente;
+            puts("Estado: Realizada");
         }
     }
 }
