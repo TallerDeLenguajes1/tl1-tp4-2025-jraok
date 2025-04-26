@@ -16,11 +16,13 @@ typedef struct NodoTarea{
     struct NodoTarea *siguiente;
 } NodoTarea;
 
+char *asignarMemoriaYContenido(char *texto);
 NodoTarea * listaVacia();
-NodoTarea * nuevaTarea(int id);
 void cargarTarea(tarea *tarea, int ID);
+NodoTarea * nuevaTarea(int id);
 void insertarNodoAlInicio(NodoTarea **lista, NodoTarea *nuevaTarea);
 void mostrarLista(NodoTarea *lista);
+void mostrarNodo(NodoTarea nodo);
 
 int main(){
     
@@ -82,6 +84,7 @@ void cargarTarea(tarea *tarea, int ID){
     tarea->TareaID = ID;
     tarea->duracion = (rand()%91) + 10;
     char buffer[100];
+    printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
     printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
     gets(buffer);
     tarea->descripcion = asignarMemoriaYContenido(buffer);
