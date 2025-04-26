@@ -18,14 +18,21 @@ typedef struct NodoTarea{
 } NodoTarea;
 
 NodoTarea * listaVacia();
+NodoTarea * nuevaTarea(int id);
 void cargarTarea(tarea *tarea, int ID);
+void insertarNodo(NodoTarea **lista, NodoTarea *nuevaTarea);
 
 
 int main(){
     
     NodoTarea *tareasPendientes =  listaVacia();
-
+    bool opcion = true;
+    int ID = 1000;
+    while (opcion){
         
+        
+        
+    }
     
     return 0;
 }
@@ -56,9 +63,25 @@ void cargarTarea(tarea *tarea, int ID){
     tarea->TareaID = ID;
     tarea->duracion = (rand()%91) + 10;
     char buffer[100];
-    printf("\nDescripcion de la tarea %d (Max 100 caracteres);", ID);
+    printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
     gets(buffer);
     tarea->descripcion = asignarMemoriaYContenido(buffer);
     fflush(stdin);
 }
 
+NodoTarea *nuevaTarea(int id){
+    NodoTarea * nuevaTarea = (NodoTarea*)malloc(sizeof(NodoTarea));
+    if (nuevaTarea == NULL){
+        puts("\t\t----Error en NodoTarea nuevaTarea---");
+    }else{
+        cargarTarea(&nuevaTarea->T,id);
+        nuevaTarea->siguiente = listaVacia();
+    }
+    return nuevaTarea;
+}
+
+void insertarNodo(NodoTarea **lista, NodoTarea *nuevaTarea)
+{
+    nuevaTarea->siguiente = *lista;
+    lista = nuevaTarea;
+}
