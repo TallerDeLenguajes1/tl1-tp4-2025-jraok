@@ -25,32 +25,23 @@ void mostrarLista(NodoTarea *lista);
 void mostrarNodo(NodoTarea nodo);
 
 int main(){
-    
+    srand(time(NULL));
     NodoTarea *tareasPendientes =  listaVacia();
-    int opcion = 1;
+    char opcion = '1';
     int ID = 1000;
-    while (opcion != 0){
-        if (opcion == 1)
+    while (opcion != '0'){
+        if (opcion == '1')
         {
             insertarNodoAlInicio(&tareasPendientes,nuevaTarea(ID));
             ID++;
         }
         
         printf("\nContinuar agregando tareas?\n\t Si = 1 / No = 0\n");
-        scanf("%d",&opcion);
+        scanf("%c",&opcion);
         fflush(stdin);
-        switch (opcion)
+        if (opcion != '0' && opcion != '1')
         {
-        case 1:
-            opcion = 1;
-            break;
-        case 0:
-            opcion = 0;
-            break;
-            
-        default:
             puts("\t\t----Opcion Invalida----");
-            break;
         }
     }
     
@@ -85,10 +76,14 @@ void cargarTarea(tarea *tarea, int ID){
     tarea->duracion = (rand()%91) + 10;
     char buffer[100];
     printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
-    printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
     gets(buffer);
     tarea->descripcion = asignarMemoriaYContenido(buffer);
-    fflush(stdin);
+    while (tarea->descripcion == NULL){
+        puts("\t\t----Descripcion invalida, ringrese----");
+        printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
+        gets(buffer);
+        tarea->descripcion = asignarMemoriaYContenido(buffer);
+    }    
 }
 
 NodoTarea *nuevaTarea(int id){
