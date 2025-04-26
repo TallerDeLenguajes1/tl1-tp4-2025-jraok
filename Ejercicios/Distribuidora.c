@@ -6,7 +6,7 @@
 //Estructura para las tareas realizadas o a realizar
 struct {
     int TareaID;    /* numero autoincremental comenzando por el 1000 */
-    char *descripcion;  
+    char *descripcion;
     int duracion;   /* aleatorio entre 10 - 100 */
 } typedef tarea;
 
@@ -20,29 +20,47 @@ char *asignarMemoriaYContenido(char *texto);
 NodoTarea * listaVacia();
 void cargarTarea(tarea *tarea, int ID);
 NodoTarea * nuevaTarea(int id);
-void insertarNodoAlInicio(NodoTarea **lista, NodoTarea *nuevaTarea);
+void insertarTarea(NodoTarea **lista, NodoTarea *nuevaTarea);
 void mostrarLista(NodoTarea *lista);
+void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas);
 void mostrarNodo(NodoTarea nodo);
+void menuDeOpciones();
 
 int main(){
+    puts("TdLI -- TRABAJO PRACTICO 4");
     srand(time(NULL));
     NodoTarea *tareasPendientes =  listaVacia();    /* inicio para la lista de tareas pendientes */
-    char opcion = '1';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
+    NodoTarea *tareasRealizadas =  listaVacia();    /* inicio para la lista de tareas realizadas */
+    char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
     int ID = 1000;      /* id para las tareas */
-    while (opcion != '0'){      /* bucle para agregar las tareas */
-        // solo agrego una nueva tarea si opcion = 1
-        if (opcion == '1')
-        {  
-            // en vez de crear un nuevo nodo envio la funcion como parametro
-            insertarNodoAlInicio(&tareasPendientes,nuevaTarea(ID));
-            ID++;   /* autoincremento del ID */
-        }
-        printf("\nContinuar agregando tareas?\n\t Si = 1 / No = 0\n"); /* mensaje de opcion */
+    while (opcion != '5'){      /* bucle para agregar las tareas */   
+        menuDeOpciones();
         scanf("%c",&opcion);
-        fflush(stdin);
-        if (opcion != '0' && opcion != '1')     /* mensaje de error para la opcion */
+        switch (opcion)
         {
-            puts("\t\t----Opcion Invalida----");
+        case '1':
+            insertarTarea(&tareasPendientes,nuevaTarea);
+            ID++;
+            break;
+        case '2':
+            while ()
+            {
+                /* code */
+            }
+            
+            break;
+        case '3':
+            
+            break;
+        case '4':
+            
+            break;
+        case '5':
+            
+            break;
+        
+        default:
+            break;
         }
     }
     /* impresion de los nodos de la lista */
@@ -51,7 +69,8 @@ int main(){
 }
 
 // funcion para asignar memoria y contenido en un arreglo
-char *asignarMemoriaYContenido(char *texto){
+char *asignarMemoriaYContenido(char *texto)
+{
     if (strlen(texto) != 0) /* control para cadena vacia */
     {
         char *retorno = (char*)malloc(strlen(texto)+1);
@@ -61,19 +80,19 @@ char *asignarMemoriaYContenido(char *texto){
         }
         strcpy(retorno,texto); /* copia de la cadena original */
         return retorno;
-    }else{
-        return NULL;
     }
-    
+    return NULL;
 }
 
 //funcion para crear nodo/lista vacia
-NodoTarea * listaVacia(){
+NodoTarea * listaVacia()
+{
     return NULL;
 }
 
 //funcion para llenar una tarea
-void cargarTarea(tarea *tarea, int ID){
+void cargarTarea(tarea *tarea, int ID)
+{
     tarea->TareaID = ID;        /* ID recibido como parametro */
     tarea->duracion = (rand()%91) + 10;     /* duracion aleatoria entre 10 y 100 */
     char buffer[100];   /* arreglo para la descripcion */
@@ -89,7 +108,8 @@ void cargarTarea(tarea *tarea, int ID){
 }
 
 // funcion que crea y devuelve un nodoTarea
-NodoTarea *nuevaTarea(int id){
+NodoTarea *nuevaTarea(int id)
+{
     NodoTarea * nuevaTarea = (NodoTarea*)malloc(sizeof(NodoTarea)); /* nuevo nodo para la lista */
     if (nuevaTarea == NULL){
         puts("\t\t----Error en NodoTarea nuevaTarea---");
@@ -101,7 +121,7 @@ NodoTarea *nuevaTarea(int id){
 }
 
 // funcion que agrega un nuevo nodo al inicio de la lista
-void insertarNodoAlInicio(NodoTarea **lista, NodoTarea *nuevaTarea)
+void insertarTarea(NodoTarea **lista, NodoTarea *nuevaTarea)
 {
     /* primero dejo que el nuevo nodo mantenga al que estaba al inicio para no perderlo*/
     nuevaTarea->siguiente = *lista;
@@ -111,11 +131,12 @@ void insertarNodoAlInicio(NodoTarea **lista, NodoTarea *nuevaTarea)
 }
 
 // funcion para mostrar la infonmacion de un nodo(tarea)
-void mostrarNodo(NodoTarea nodo){
+void mostrarNodo(NodoTarea nodo)
+{
     printf("\nID:\t%d", nodo.T.TareaID);
     printf("\nDuracion:\t%dmin", nodo.T.duracion);
     printf("\nDescripcion:\t%s", nodo.T.descripcion);
-};
+}
 
 // funcion para mostrar la lista completa
 void mostrarLista(NodoTarea *lista)
@@ -126,4 +147,17 @@ void mostrarLista(NodoTarea *lista)
         puts("");
         actual = actual->siguiente;
     }
+}
+
+
+// mensaje para mostrar el menu de opciones
+void menuDeOpciones()
+{
+    puts("\t---MENU DE OPCIONES---");
+    puts("\t\t1-Agregar tarea pendiente");
+    puts("\t\t2-Listar todas las tareas");
+    puts("\t\t3-Marcar tarea como realizada");
+    puts("\t\t4-Buscar por ID");
+    puts("\t\t5-Buscar por palabra clave");
+    puts("\t\t6-Salir");
 }
