@@ -149,6 +149,27 @@ void mostrarLista(NodoTarea *lista)
     }
 }
 
+// funcion para mostrar todas las tareas por orden de ID
+void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas)
+{
+    NodoTarea *auxPendiente = pendientes;
+    NodoTarea *auxRealizada = realizadas;
+    // se mostrarán los nodos siempre que alguno de las dos listas sea distinta de null
+    while (auxPendiente != NULL || auxRealizada != NULL)
+    {
+        // para mostrar las tareas pendientes tengo dos situaciones, que realizadas ya esté en null o que la pendiente sea mayor
+        if ((auxPendiente != NULL && auxRealizada == NULL) && (auxPendiente->T.TareaID > auxRealizada->T.TareaID))
+        {
+            // muestro y me muevo al sieguiente nodo
+            mostrarNodo(*auxPendiente);
+            auxPendiente = auxPendiente->siguiente;
+        }else if (auxRealizada != NULL){ /* solo lo muestro su la realizadas no es null */
+            // muestro y me muevo al sieguiente nodo
+            mostrarNodo(*auxRealizada);
+            auxRealizada = auxRealizada->siguiente;
+        }
+    }
+}
 
 // mensaje para mostrar el menu de opciones
 void menuDeOpciones()
