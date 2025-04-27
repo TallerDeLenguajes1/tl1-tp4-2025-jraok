@@ -29,20 +29,21 @@ NodoTarea * extraerTarea(NodoTarea **lista, int ID);
 void marcarComoRealizada();
 
 int main(){
-    puts("\n\t\tTdLI -- TRABAJO PRACTICO 4\n");
+    puts("\n\t\tTdLI -- TRABAJO PRACTICO 4");
     srand(time(NULL));
     NodoTarea *tareasPendientes =  listaVacia();    /* inicio para la lista de tareas pendientes */
     NodoTarea *tareasRealizadas =  listaVacia();    /* inicio para la lista de tareas realizadas */
-    char opcion = '0', continuar = '1';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
+    char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
     int ID = 1000;      /* id para las tareas */
     while (opcion != '6'){      /* bucle para el menu de opciones */   
         menuDeOpciones();
         fflush(stdin);
-        scanf("%c",&opcion);
+        scanf(" %c",&opcion);
         switch (opcion)
         {
         case '1':{  
-                    while (continuar = '1')
+                    char continuar = '1';
+                    while (continuar != '0')
                     {
                         if (continuar == '1')
                         {  
@@ -52,18 +53,17 @@ int main(){
                         }
                         printf("\nContinuar agregando tareas?\n\t Si = 1 / No = 0\n"); /* mensaje de continuar */
                         scanf("%c",&continuar);
-                        fflush(stdin);
                         if (continuar != '0' && continuar != '1')     /* mensaje de error */
                         {
                             puts("\t\t----Opcion Invalida----");
                         }
                     }
                 }
-
             break;
 
         case '2':
             mostrarTodasLasTareas(tareasPendientes,tareasRealizadas);
+            
             break;
 
         case '3':{
@@ -137,6 +137,7 @@ void cargarTarea(tarea *tarea, int ID)
     tarea->TareaID = ID;        /* ID recibido como parametro */
     tarea->duracion = (rand()%91) + 10;     /* duracion aleatoria entre 10 y 100 */
     char buffer[100];   /* arreglo para la descripcion */
+    fflush(stdin);
     printf("\nDescripcion de la tarea %d (Max 100 caracteres):\t", ID);
     gets(buffer);
     tarea->descripcion = asignarMemoriaYContenido(buffer);      /* guardado de la descripcion */
@@ -197,7 +198,7 @@ NodoTarea * extraerTarea(NodoTarea **lista, int ID)
 // funcion para mostrar la infonmacion de un nodo(tarea)
 void mostrarNodo(NodoTarea nodo)
 {
-    printf("\nID:\t%d", nodo.T.TareaID);
+    printf("\nID:\t\t%d", nodo.T.TareaID);
     printf("\nDuracion:\t%dmin", nodo.T.duracion);
     printf("\nDescripcion:\t%s", nodo.T.descripcion);
 }
@@ -222,17 +223,17 @@ void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas)
     while (auxPendiente != NULL || auxRealizada != NULL)
     {
         // para mostrar las tareas pendientes tengo dos situaciones, que realizadas ya esté en null o que la pendiente sea mayor
-        if ((auxPendiente != NULL && auxRealizada == NULL) && (auxPendiente->T.TareaID > auxRealizada->T.TareaID))
+        if (auxPendiente != NULL && (auxRealizada == NULL || auxPendiente->T.TareaID > auxRealizada->T.TareaID))
         {
             // muestro y me muevo al sieguiente nodo
             mostrarNodo(*auxPendiente);
             auxPendiente = auxPendiente->siguiente;
-            puts("Estado: Pendiente");
+            puts("\nEstado:\t\tPendiente");
         }else if (auxRealizada != NULL){ /* solo lo muestro su la realizadas no es null */
             // muestro y me muevo al sieguiente nodo
             mostrarNodo(*auxRealizada);
             auxRealizada = auxRealizada->siguiente;
-            puts("Estado: Realizada");
+            puts("\nEstado:\t\tRealizada");
         }
     }
 }
@@ -240,7 +241,7 @@ void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas)
 // mensaje para mostrar el menu de opciones
 void menuDeOpciones()
 {
-    puts("\t---MENU DE OPCIONES---\n");
+    puts("\n\t---MENU DE OPCIONES---\n");
     puts("\t1-Agregar tarea pendiente");
     puts("\t2-Listar todas las tareas");
     puts("\t3-Marcar tarea como realizada");
