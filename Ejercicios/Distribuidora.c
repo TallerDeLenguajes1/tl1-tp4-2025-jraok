@@ -26,15 +26,16 @@ void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas);
 void mostrarNodo(NodoTarea nodo);
 void menuDeOpciones();
 NodoTarea * extraerTarea(NodoTarea **lista, int ID);
-void marcarComoRealizada();
+NodoTarea * buscarPorID(NodoTarea **lista, int ID);
 
 int main(){
     puts("\n\t\tTdLI -- TRABAJO PRACTICO 4");
     srand(time(NULL));
     NodoTarea *tareasPendientes =  listaVacia();    /* inicio para la lista de tareas pendientes */
     NodoTarea *tareasRealizadas =  listaVacia();    /* inicio para la lista de tareas realizadas */
-    char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
+    char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor del teclado */
     int ID = 1000;      /* id para las tareas */
+    char buffer[100];
     while (opcion != '6'){      /* bucle para el menu de opciones */   
         menuDeOpciones();
         fflush(stdin);
@@ -72,7 +73,6 @@ int main(){
                     int bandera = 1;
                     while (bandera)
                     {
-                        char buffer[100];
                         printf("\n\tIngrese el ID de la tarea (Enter para cancelar):  ");
                         fflush(stdin);
                         gets(buffer);
@@ -94,13 +94,35 @@ int main(){
             break;
 
         case '4':
-            
+                printf("\nIngrese el ID de la tarea (Enter para cancelar):\t");
+                fflush(stdin);
+                gets(buffer);
+                if (buffer[0] != '\0')
+                {
+                    NodoTarea *tareaBuscada = buscarPorID(&tareasPendientes,atoi(buffer));
+                    if (tareaBuscada == NULL)
+                    {
+                        tareaBuscada = buscarPorID(&tareasRealizadas, atoi(buffer));
+                    }
+                    if (tareaBuscada != NULL){
+                        printf("\n\t\t---Tarea encontrada---");
+                        mostrarNodo(*tareaBuscada);
+                    }else{
+                        printf("\n\t\t---Tarea no encontrada---");
+                    }
+                }
+                
             break;
+            
         case '5':
             
             break;
+
+        case '6':
+            break;
         
         default:
+            puts("\t\t----Opcion Invalida----");
             break;
         }
     }
@@ -193,6 +215,16 @@ NodoTarea * extraerTarea(NodoTarea **lista, int ID)
         temporal->siguiente = NULL;    
     }
     return temporal;
+}
+
+NodoTarea * buscarPorID(NodoTarea **lista, int ID)
+{
+    NodoTarea * aux = (*lista);
+    while (aux != NULL && aux->T.TareaID != ID)
+    {
+        aux = aux->siguiente;
+    }
+    return aux;
 }
 
 // funcion para mostrar la infonmacion de un nodo(tarea)
