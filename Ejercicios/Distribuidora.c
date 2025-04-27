@@ -16,7 +16,7 @@ typedef struct NodoTarea{
     struct NodoTarea *siguiente;
 } NodoTarea;
 
-char *asignarMemoriaYContenido(char *texto);
+char * asignarMemoriaYContenido(char *texto);
 NodoTarea * listaVacia();
 void cargarTarea(tarea *tarea, int ID);
 NodoTarea * nuevaTarea(int id);
@@ -25,6 +25,8 @@ void mostrarLista(NodoTarea *lista);
 void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas);
 void mostrarNodo(NodoTarea nodo);
 void menuDeOpciones();
+NodoTarea * extraerTarea(NodoTarea **lista, int ID);
+void marcarComoRealizada();
 
 int main(){
     puts("TdLI -- TRABAJO PRACTICO 4");
@@ -42,15 +44,13 @@ int main(){
             insertarTarea(&tareasPendientes,nuevaTarea);
             ID++;
             break;
+
         case '2':
-            while ()
-            {
-                /* code */
-            }
-            
+            mostrarTodasLasTareas(&tareasPendientes,&tareasRealizadas);
             break;
+
         case '3':
-            
+            puts();
             break;
         case '4':
             
@@ -69,7 +69,7 @@ int main(){
 }
 
 // funcion para asignar memoria y contenido en un arreglo
-char *asignarMemoriaYContenido(char *texto)
+char * asignarMemoriaYContenido(char *texto)
 {
     if (strlen(texto) != 0) /* control para cadena vacia */
     {
@@ -130,6 +130,29 @@ void insertarTarea(NodoTarea **lista, NodoTarea *nuevaTarea)
     /* asi ahora la lista apunta al nuevo nodo y él apunta al nodo que ya estaba antes */
 }
 
+// funcion para quitar una tarea
+NodoTarea * extraerTarea(NodoTarea **lista, int ID)
+{
+    NodoTarea * temporal = (*lista), *anterior = NULL;
+    while (temporal != NULL && temporal->T.TareaID != ID)
+    {
+        anterior = temporal;
+        temporal = temporal->siguiente;
+    }
+
+    if (temporal != NULL)
+    {
+        if (temporal == (*lista))
+        {
+            (*lista) = temporal->siguiente;
+        }else{
+            anterior->siguiente = temporal->siguiente;
+        }
+        temporal->siguiente = NULL;    
+    }
+    return temporal;
+}
+
 // funcion para mostrar la infonmacion de un nodo(tarea)
 void mostrarNodo(NodoTarea nodo)
 {
@@ -184,3 +207,4 @@ void menuDeOpciones()
     puts("\t\t5-Buscar por palabra clave");
     puts("\t\t6-Salir");
 }
+
