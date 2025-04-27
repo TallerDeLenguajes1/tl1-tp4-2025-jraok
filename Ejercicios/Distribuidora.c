@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 
 //Estructura para las tareas realizadas o a realizar
@@ -17,6 +18,7 @@ typedef struct NodoTarea{
 } NodoTarea;
 
 char * asignarMemoriaYContenido(char *texto);
+char *aMinusculas(char *palabra);
 NodoTarea * listaVacia();
 void cargarTarea(tarea *tarea, int ID);
 NodoTarea * nuevaTarea(int id);
@@ -35,8 +37,8 @@ int main(){
     NodoTarea *tareasRealizadas =  listaVacia();    /* inicio para la lista de tareas realizadas */
     char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor del teclado */
     int ID = 1000;      /* id para las tareas */
-    char buffer[100];
-    while (opcion != '6'){      /* bucle para el menu de opciones */   
+    char * buffer = malloc(100); /* arreglo de 100 caracteres */
+    while (opcion != '5'){      /* bucle para el menu de opciones */   
         menuDeOpciones();
         fflush(stdin);
         scanf(" %c",&opcion);
@@ -94,31 +96,55 @@ int main(){
             break;
 
         case '4':
-                printf("\nIngrese el ID de la tarea (Enter para cancelar):\t");
+                printf("\nIngrese el dato de la tarea (Enter para cancelar):\t");
                 fflush(stdin);
                 gets(buffer);
                 if (buffer[0] != '\0')
                 {
+                    int bandera = 0;
                     NodoTarea *tareaBuscada = buscarPorID(&tareasPendientes,atoi(buffer));
-                    if (tareaBuscada == NULL)
-                    {
-                        tareaBuscada = buscarPorID(&tareasRealizadas, atoi(buffer));
-                    }
+                    printf("\n\t\t---Coincidencias en ID---");
                     if (tareaBuscada != NULL){
-                        printf("\n\t\t---Tarea encontrada---");
                         mostrarNodo(*tareaBuscada);
+                        puts("\nEstado:\t\tPendiente");
+                        bandera = 1;
                     }else{
-                        printf("\n\t\t---Tarea no encontrada---");
+                        tareaBuscada = buscarPorID(&tareasRealizadas, atoi(buffer));
+                        if (tareaBuscada != NULL)
+                        { 
+                            mostrarNodo(*tareaBuscada);
+                            puts("\nEstado:\t\tRealizada");   
+                            bandera = 1;
+                        }
                     }
+                    bandera != 0?:puts("\n\t\t---Sin coincidencias---");
+                    bandera = 0;
+                    
+                    NodoTarea *auxiliar = tareasPendientes;
+                    char * auxDescripcion = NULL;
+                    buffer = aMinusculas(buffer);
+                    printf("\n\t\t---Coincidencias en descripcion---");
+                    while (auxiliar != NULL)
+                    {
+                        auxDescripcion = aMinusculas(auxiliar->T.descripcion);
+                        if (strstr(auxDescripcion,buffer))
+                        {   
+                            bandera = 1;
+                            mostrarNodo(*auxiliar);
+                            puts("\nEstado:\t\tPendiente");
+                        }
+                        auxiliar = auxiliar->siguiente;
+                    }
+                    if (bandera == 0)
+                    {
+                        printf("\n\t\t---Sin coincidencias---");
+                    }
+                    
                 }
                 
             break;
-            
-        case '5':
-            
-            break;
 
-        case '6':
+        case '5':
             break;
         
         default:
@@ -145,6 +171,28 @@ char * asignarMemoriaYContenido(char *texto)
         return retorno;
     }
     return NULL;
+}
+
+// funcion para llevar una cadena a minusculas
+char *aMinusculas(char *palabra){
+    if (palabra == NULL){ /* manejo en caso de que la palabra este vacia */
+        return NULL;
+    }
+    // reserva de memoria dinamica
+    char *minusculas = (char*)malloc(strlen(palabra)+1);
+    if (minusculas == NULL){        /* manejo de errores */
+        puts("ERROR de memoria en aMinusculas");
+        return NULL;
+    }
+
+    // copiado de la cadena original
+    strcpy(minusculas,palabra);
+
+    // paso a minusculas
+    for (int i = 0; palabra[i]; i++){
+        minusculas[i]=tolower(minusculas[i]);
+    }
+    return minusculas;
 }
 
 //funcion para crear nodo/lista vacia
@@ -277,8 +325,22 @@ void menuDeOpciones()
     puts("\t1-Agregar tarea pendiente");
     puts("\t2-Listar todas las tareas");
     puts("\t3-Marcar tarea como realizada");
-    puts("\t4-Buscar por ID");
-    puts("\t5-Buscar por palabra clave");
-    puts("\t6-Salir");
+    puts("\t4-Buscar tarea");
+    puts("\t5-Salir");
 }
 
+{
+    NodoTarea *aux = (*lista);  /* nodo auxiliar para recorrer la lista */
+    char *auxDescripcion = NULL;    /* variable para la descripcion de la tarea */
+    palabraClave = aMinusculas(palabraClave); /* paso a minusculas la palabra clave */
+    while (aux != NULL)     /* recorro la lista hasta el final o encontrar una tarea */
+    {
+        auxDescripcion = aMinusculas(aux->T.descripcion); /* paso a minusculas la descripcion */
+        if (strstr(auxDescripcion,palabraClave) != NULL) /* busco la palabra clave en la descripcion */
+        {
+            return aux;  /* retorno el nodo que contiene la palabra clave */
+        }
+        aux = aux->siguiente;
+    }
+    return NULL;
+}
