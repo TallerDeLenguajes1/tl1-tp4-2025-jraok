@@ -66,7 +66,6 @@ int main(){
 
         case '2':
             mostrarTodasLasTareas(tareasPendientes,tareasRealizadas);
-            
             break;
 
         case '3':{
@@ -327,20 +326,4 @@ void menuDeOpciones()
     puts("\t3-Marcar tarea como realizada");
     puts("\t4-Buscar tarea");
     puts("\t5-Salir");
-}
-
-{
-    NodoTarea *aux = (*lista);  /* nodo auxiliar para recorrer la lista */
-    char *auxDescripcion = NULL;    /* variable para la descripcion de la tarea */
-    palabraClave = aMinusculas(palabraClave); /* paso a minusculas la palabra clave */
-    while (aux != NULL)     /* recorro la lista hasta el final o encontrar una tarea */
-    {
-        auxDescripcion = aMinusculas(aux->T.descripcion); /* paso a minusculas la descripcion */
-        if (strstr(auxDescripcion,palabraClave) != NULL) /* busco la palabra clave en la descripcion */
-        {
-            return aux;  /* retorno el nodo que contiene la palabra clave */
-        }
-        aux = aux->siguiente;
-    }
-    return NULL;
 }
