@@ -29,29 +29,70 @@ NodoTarea * extraerTarea(NodoTarea **lista, int ID);
 void marcarComoRealizada();
 
 int main(){
-    puts("TdLI -- TRABAJO PRACTICO 4");
+    puts("\n\t\tTdLI -- TRABAJO PRACTICO 4\n");
     srand(time(NULL));
     NodoTarea *tareasPendientes =  listaVacia();    /* inicio para la lista de tareas pendientes */
     NodoTarea *tareasRealizadas =  listaVacia();    /* inicio para la lista de tareas realizadas */
-    char opcion = '0';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
+    char opcion = '0', continuar = '1';      /* variable para el menu, es char para operar con cualquier valor delt teclado */
     int ID = 1000;      /* id para las tareas */
-    while (opcion != '5'){      /* bucle para agregar las tareas */   
+    while (opcion != '6'){      /* bucle para el menu de opciones */   
         menuDeOpciones();
+        fflush(stdin);
         scanf("%c",&opcion);
         switch (opcion)
         {
-        case '1':
-            insertarTarea(&tareasPendientes,nuevaTarea);
-            ID++;
+        case '1':{  
+                    while (continuar = '1')
+                    {
+                        if (continuar == '1')
+                        {  
+                            // en vez de crear un nuevo nodo envio la funcion como parametro
+                            insertarTarea(&tareasPendientes,nuevaTarea(ID));
+                            ID++;   /* autoincremento del ID */
+                        }
+                        printf("\nContinuar agregando tareas?\n\t Si = 1 / No = 0\n"); /* mensaje de continuar */
+                        scanf("%c",&continuar);
+                        fflush(stdin);
+                        if (continuar != '0' && continuar != '1')     /* mensaje de error */
+                        {
+                            puts("\t\t----Opcion Invalida----");
+                        }
+                    }
+                }
+
             break;
 
         case '2':
-            mostrarTodasLasTareas(&tareasPendientes,&tareasRealizadas);
+            mostrarTodasLasTareas(tareasPendientes,tareasRealizadas);
             break;
 
-        case '3':
-            puts();
+        case '3':{
+                    puts("\t\t----Lista de Tareas Pendientes----");
+                    mostrarLista(tareasPendientes);
+                    int bandera = 1;
+                    while (bandera)
+                    {
+                        char buffer[100];
+                        printf("\n\tIngrese el ID de la tarea (Enter para cancelar):  ");
+                        fflush(stdin);
+                        gets(buffer);
+                        if (buffer[0] == '\0')
+                        {
+                            break;
+                        }else{
+                            NodoTarea * extraida = extraerTarea(&tareasPendientes, atoi(buffer));
+                            if (extraida != NULL)
+                            {
+                                insertarTarea(&tareasRealizadas, extraida);
+                                break;
+                            }else{
+                                puts("----ID invalido, reingrese----");
+                            }
+                        }
+                    } 
+                }
             break;
+
         case '4':
             
             break;
@@ -199,12 +240,12 @@ void mostrarTodasLasTareas(NodoTarea *pendientes, NodoTarea *realizadas)
 // mensaje para mostrar el menu de opciones
 void menuDeOpciones()
 {
-    puts("\t---MENU DE OPCIONES---");
-    puts("\t\t1-Agregar tarea pendiente");
-    puts("\t\t2-Listar todas las tareas");
-    puts("\t\t3-Marcar tarea como realizada");
-    puts("\t\t4-Buscar por ID");
-    puts("\t\t5-Buscar por palabra clave");
-    puts("\t\t6-Salir");
+    puts("\t---MENU DE OPCIONES---\n");
+    puts("\t1-Agregar tarea pendiente");
+    puts("\t2-Listar todas las tareas");
+    puts("\t3-Marcar tarea como realizada");
+    puts("\t4-Buscar por ID");
+    puts("\t5-Buscar por palabra clave");
+    puts("\t6-Salir");
 }
 
