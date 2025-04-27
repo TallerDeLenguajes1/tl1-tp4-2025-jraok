@@ -29,6 +29,8 @@ void mostrarNodo(NodoTarea nodo);
 void menuDeOpciones();
 NodoTarea * extraerTarea(NodoTarea **lista, int ID);
 NodoTarea * buscarPorID(NodoTarea **lista, int ID);
+void liberarTarea(tarea *tarea);
+void liberarLista(NodoTarea *lista);
 
 int main(){
     puts("\n\t\tTdLI -- TRABAJO PRACTICO 4");
@@ -152,7 +154,9 @@ int main(){
         }
     }
     /* impresion de los nodos de la lista */
-    mostrarLista(tareasPendientes);
+    liberarLista(tareasPendientes); /* liberacion de la lista de tareas pendientes */
+    liberarLista(tareasRealizadas); /* liberacion de la lista de tareas realizadas */
+    free(buffer); /* liberacion del buffer */
     return 0;
 }
 
@@ -326,4 +330,30 @@ void menuDeOpciones()
     puts("\t3-Marcar tarea como realizada");
     puts("\t4-Buscar tarea");
     puts("\t5-Salir");
+}
+
+// funcion para liberar la lista de tareas
+void liberarTarea(tarea *tarea)
+{
+    if (tarea != NULL)
+    {
+        free(tarea->descripcion); /* liberacion de la descripcion */
+        tarea->descripcion = NULL; /* aterrizo el puntero para evitar errores */
+    }
+
+}
+
+// funcion para liberar la lista de tareas
+void liberarLista(NodoTarea *lista)
+{
+    NodoTarea *auxiliar = lista; /* nodo auxiliar para la reescritura de informacion */
+    /* mientras la lista no sea null sigo liberando nodos */
+    while (auxiliar != NULL)
+    {
+        NodoTarea *temporal = auxiliar; /* guardo el nodo a liberar */
+        auxiliar = auxiliar->siguiente; /* muevo al siguiente nodo */
+        liberarTarea(&temporal->T); /* libero la tarea */
+        free(temporal); /* libero el nodo */
+    }
+    free(lista); /* libero la lista */
 }
