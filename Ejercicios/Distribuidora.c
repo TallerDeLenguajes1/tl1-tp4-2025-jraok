@@ -143,7 +143,21 @@ int main(){
                         // me muevo en la lista
                         tareaBuscada = tareaBuscada->siguiente;
                     }
-                  
+                    // ahora busco la tarea en la lista de realizadas
+                    tareaBuscada = tareasRealizadas;
+                    while (tareaBuscada != NULL) /* recorro toda la lista */
+                    {
+                        auxDescripcion = aMinusculas(tareaBuscada->T.descripcion);  /* uso el auxiliar para no reescribir la descripcion */
+                        if (strstr(auxDescripcion,buffer))  /* verifico si el dato esta en la descripcion */
+                        {   
+                            // muestro la tarea en caso de encontrarla
+                            bandera = 1;
+                            mostrarNodo(*tareaBuscada);
+                            puts("\nEstado:\t\tRealizada");
+                        }
+                        // me muevo en la lista
+                        tareaBuscada = tareaBuscada->siguiente;
+                    }
                     if (bandera == 0)
                     {
                         printf("\n\t\t---Sin coincidencias---");
