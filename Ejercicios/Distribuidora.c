@@ -71,9 +71,10 @@ int main(){
             break;
 
         case '3':{
+                    // muestro la lista de tareas pendientes
                     puts("\t\t----Lista de Tareas Pendientes----");
                     mostrarLista(tareasPendientes);
-                    int bandera = 1;
+                    int bandera = 1;    /* marca para el bucle */
                     while (bandera)
                     {
                         printf("\n\tIngrese el ID de la tarea (Enter para cancelar):  ");
@@ -83,12 +84,13 @@ int main(){
                         {
                             break;
                         }else{
-                            NodoTarea * extraida = extraerTarea(&tareasPendientes, atoi(buffer));
-                            if (extraida != NULL)
+                            /* nodo auxiliar para encontrar la tarea */
+                            NodoTarea * extraida = extraerTarea(&tareasPendientes, atoi(buffer));   /* atoi convierte a la cadena en un int */
+                            if (extraida != NULL)   /* en caso de encontrar la tarea se inserta en la otra lista */
                             {
                                 insertarTarea(&tareasRealizadas, extraida);
                                 break;
-                            }else{
+                            }else{  /* mensaje en caso de no encontrar nada */
                                 puts("----ID invalido, reingrese----");
                             }
                         }
@@ -97,45 +99,51 @@ int main(){
             break;
 
         case '4':
+                /* mensaje para pedir el dato con el que buscar la tarae */
                 printf("\nIngrese el dato de la tarea (Enter para cancelar):\t");
                 fflush(stdin);
                 gets(buffer);
-                if (buffer[0] != '\0')
+                if (buffer[0] != '\0')  /* si la cadena no es vacía */
                 {
-                    int bandera = 0;
+                    int bandera = 0;    /* bandera para el caso de no encontrar la tarea en la lista */
+                    // nodo auxiliar para la tarea buscada
                     NodoTarea *tareaBuscada = buscarPorID(&tareasPendientes,atoi(buffer));
                     printf("\n\t\t---Coincidencias en ID---");
-                    if (tareaBuscada != NULL){
+                    // aqui considero que el ID es unico
+                    if (tareaBuscada != NULL){  /* en caso de encontarse en la lista de pendientes */
                         mostrarNodo(*tareaBuscada);
                         puts("\nEstado:\t\tPendiente");
                         bandera = 1;
-                    }else{
-                        tareaBuscada = buscarPorID(&tareasRealizadas, atoi(buffer));
-                        if (tareaBuscada != NULL)
+                    }else{  /* sino lo buscamos en realizadas */
+                        tareaBuscada = buscarPorID(&tareasRealizadas, atoi(buffer));    /* atoi convierte la cadena en un int */
+                        if (tareaBuscada != NULL) /* en caso de encontrar la tarea se la muestra */
                         { 
                             mostrarNodo(*tareaBuscada);
                             puts("\nEstado:\t\tRealizada");   
                             bandera = 1;
                         }
                     }
-                    bandera != 0?:puts("\n\t\t---Sin coincidencias---");
-                    bandera = 0;
-                    
-                    NodoTarea *auxiliar = tareasPendientes;
-                    char * auxDescripcion = NULL;
-                    buffer = aMinusculas(buffer);
+                    bandera != 0?:puts("\n\t\t---Sin coincidencias---");    /* mensaje en caso de que no haya coincidencias en ninguna de las listas */
+                    bandera = 0;    /* la reinicio para el siguiente bucle */
+                    // ahora voy a hacer una busqueda por la descripcion en la lista de pendientes
+                    tareaBuscada = tareasPendientes;
+                    char * auxDescripcion = NULL;   /* auxiliar para la descripcion */
+                    buffer = aMinusculas(buffer);   /* reescribo el dato para que no sea CamelSensitive */
                     printf("\n\t\t---Coincidencias en descripcion---");
-                    while (auxiliar != NULL)
+                    while (tareaBuscada != NULL) /* recorro toda la lista */
                     {
-                        auxDescripcion = aMinusculas(auxiliar->T.descripcion);
-                        if (strstr(auxDescripcion,buffer))
+                        auxDescripcion = aMinusculas(tareaBuscada->T.descripcion);  /* uso el auxiliar para no reescribir la descripcion */
+                        if (strstr(auxDescripcion,buffer))  /* verifico si el dato esta en la descripcion */
                         {   
+                            // muestro la tarea en caso de encontrarla
                             bandera = 1;
-                            mostrarNodo(*auxiliar);
+                            mostrarNodo(*tareaBuscada);
                             puts("\nEstado:\t\tPendiente");
                         }
-                        auxiliar = auxiliar->siguiente;
+                        // me muevo en la lista
+                        tareaBuscada = tareaBuscada->siguiente;
                     }
+                  
                     if (bandera == 0)
                     {
                         printf("\n\t\t---Sin coincidencias---");
