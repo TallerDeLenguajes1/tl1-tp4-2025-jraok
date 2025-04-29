@@ -10,3 +10,4 @@ Este proyecto implementa un **gestor de tareas para empleados** de una distribui
 - **Transferencia de tareas**: permite marcar tareas como realizadas y moverlas entre listas.
 - **Listados por estado**: muestra tareas pendientes y realizadas por separado.
 - **Búsqueda de tareas**: se pueden buscar por ID o palabra clave.
+prueba
